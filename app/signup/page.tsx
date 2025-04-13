@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import * as Storage from "@/app/utils/storage"
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { LoginBtn } from "@/components/Button";
 import Link from "next/link";
 import { SignUpData } from "@/types";
@@ -10,7 +10,9 @@ import { validateUserData } from "../utils/validations";
 
 export default function Signup() {
 
-  const router = useRouter();
+  // if the user is already logged in redirect to /blogs page
+  const isLoggedIn = Storage.getItem<boolean>("isLoggedIn");
+  if (isLoggedIn) redirect("/blogs");
 
   // for collecting user input data 
   const [formData, setFormData] = useState<SignUpData>({
@@ -49,7 +51,7 @@ export default function Signup() {
     // console.log(formData);
     Storage.setItem("authUser", formData);
 
-    router.push("/login");
+    redirect("/login");
   }
 
   return (

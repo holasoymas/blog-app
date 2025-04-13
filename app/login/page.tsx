@@ -1,15 +1,18 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import * as Storage from "@/app/utils/storage";
 import { LoginBtn } from "@/components/Button";
 import Link from "next/link";
 import { LoginData, SignUpData } from "@/types";
+import { dummyBlogs } from "@/data/dummyBlogs";
 
 const LogIn = () => {
 
-  const router = useRouter();
+  // if the user is already logged in redirect to /blogs page
+  const isLoggedIn = Storage.getItem<boolean>("isLoggedIn");
+  if (isLoggedIn) redirect("/blogs");
 
   const [formData, setFormData] = useState<LoginData>({
     email: "",
@@ -50,7 +53,10 @@ const LogIn = () => {
 
     //NOTE:  if credentials match ,set the isLoggedIn flag and redirect to blogs page
     Storage.setItem("isLoggedIn", true);
-    router.push("/blogs");
+
+    // store the initialized blogs as soo as log in  
+    Storage.setItem("blogs", dummyBlogs);
+    redirect("/blogs");
   }
 
   return (
