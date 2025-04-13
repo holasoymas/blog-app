@@ -3,22 +3,24 @@
 import React, { useState } from "react";
 import * as Storage from "@/app/utils/storage"
 import { useRouter } from "next/navigation";
+import { LoginBtn } from "@/components/Button";
+import Link from "next/link";
+import { SignUpData } from "@/types";
+import { validateUserData } from "../utils/validations";
 
 export default function Signup() {
 
   const router = useRouter();
 
-  interface FormProps {
-    name: string,
-    email: string,
-    password: string,
-  }
-
-  const [formData, setFormData] = useState<FormProps>({
+  // for collecting user input data 
+  const [formData, setFormData] = useState<SignUpData>({
     name: "",
     email: "",
     password: ""
   });
+
+  // for rendering user errors 
+  const [formErrors, setFormErrors] = useState<Partial<SignUpData>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -26,23 +28,36 @@ export default function Signup() {
     setFormData(prev => ({
       ...prev,
       [name]: value,
-    }))
+    }));
+
+    // clear the errors on again user input 
+    setFormErrors(prev => ({
+      ...prev,
+      [name]: ""
+    }));
   }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
-    Storage.setItem("user", formData);
+
+    const errors = validateUserData(formData);
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    // console.log(formData);
+    Storage.setItem("authUser", formData);
 
     router.push("/login");
   }
 
   return (
     <>
-      <form className="flex flex-col justify-center items-center h-screen  p-8" onSubmit={handleSubmit}>
+      <form className="forms" onSubmit={handleSubmit}>
         <h1 className="form-title">Sign Up</h1>
 
-        <div className="w-full max-w-md space-y-6">
+        <div className="field-container">
           <div>
             <label htmlFor="name" className="label-name">
               Name
@@ -53,11 +68,11 @@ export default function Signup() {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none 
-                 focus:border-blue-500 placeholder-gray-500 dark:placeholder-gray-400
-                 dark:border-gray-600 dark:bg-gray-800 dark:text-white transition-colors"
+              className="input-field"
               placeholder="Enter your name"
+              required
             />
+            {formErrors.name && <p className="field-error">{formErrors.name}</p>}
           </div>
 
           <div>
@@ -70,11 +85,11 @@ export default function Signup() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none 
-                 focus:border-blue-500 placeholder-gray-500 dark:placeholder-gray-400
-                 dark:border-gray-600 dark:bg-gray-800 dark:text-white transition-colors"
+              className="input-field"
               placeholder="Enter your email"
+              required
             />
+            {formErrors.email && <p className="field-error">{formErrors.email}</p>}
           </div>
 
           <div>
@@ -87,21 +102,16 @@ export default function Signup() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none 
-                 focus:border-blue-500 placeholder-gray-500 dark:placeholder-gray-400
-                 dark:border-gray-600 dark:bg-gray-800 dark:text-white transition-colors"
+              className="input-field"
               placeholder="Enter your password"
+              required
             />
+            {formErrors.password && <p className="field-error">{formErrors.password}</p>}
           </div>
 
-          <button
-            type="submit"
-            className="w-full border-2 border-black text-black font-medium py-3 px-7 rounded-lg
-            transition-all duration-300 hover:bg-black hover:text-white dark:border-white dark:text-white 
-            dark:hover:bg-white dark:hover:text-black focus:outline-none"
-          >
-            Sign Up
-          </button>
+          <h3 className="text-center"> Already have an account ? <Link className="text-blue-400 underline" href="/login">Login</Link></h3>
+
+          <LoginBtn text="Sign Up" />
         </div>
       </form>
     </>
