@@ -1,5 +1,3 @@
-"use client";
-
 // UTILITIES WRAPPER FUNCTIONS FOR LOCALSTORAGE 
 
 export function setItem<T>(key: string, value: T): void {
