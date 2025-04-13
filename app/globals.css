@@ -24,3 +24,52 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+
+  /* With fix - proper dark mode handling */
+  input:-webkit-autofill {
+    background-color: transparent !important;
+    color: white !important;
+    box-shadow: 0 0 0 30px #333 inset !important;
+  }
+
+  /* .input-field { */
+  /*   @apply w-full px-4 py-2 border-2 border-gray-300 rounded-md focus:outline-none focus:border-blue-500 placeholder-gray-500 dark:placeholder-gray-300; */
+  /* } */
+
+  .forms {
+    @apply flex flex-col justify-center items-center h-screen p-8;
+  }
+
+  .field-container {
+    @apply w-full max-w-md space-y-6;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 placeholder-gray-500 dark:placeholder-gray-400 dark:border-gray-600 dark:bg-gray-800 dark:text-white transition-colors;
+  }
+
+  .form-title {
+    @apply text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white;
+  }
+
+  .label-name {
+    @apply block font-medium text-gray-700 dark:text-gray-300 mb-1;
+  }
+
+  .field-error {
+    @apply text-red-500 text-sm;
+  }
+
+  /* buttons part style  */
+
+  .app-btn {
+    @apply border-2 border-black text-black font-medium py-3 px-7 rounded-full transition-all duration-300 hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black focus:outline-none;
+  }
+
+  .login-btn {
+    @apply w-full border-2 border-black text-black font-medium py-3 px-7 rounded-lg transition-all duration-300 hover:bg-black hover:text-white dark:border-white dark:text-white dark:hover:bg-white dark:hover:text-black focus:outline-none cursor-pointer;
+  }
+
+}
