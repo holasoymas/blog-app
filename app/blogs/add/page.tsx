@@ -6,7 +6,7 @@ import { LoginBtn } from "@/components/Button";
 import { generateRamdomBytes } from "@/app/utils/randomBytes";
 import { Blog } from "@/types";
 import { getItem, setItem } from "@/app/utils/storage";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { validateBlog } from "@/app/utils/validations";
 
 const imageOptions = [
@@ -20,8 +20,6 @@ const imageOptions = [
 ];
 
 export default function BlogForm() {
-
-  const router = useRouter();
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -60,7 +58,7 @@ export default function BlogForm() {
     setItem<Blog[]>("blogs", updatedBlogs);
 
     // go to the currently created blog 
-    router.push(`/blogs/${id}`);
+    redirect(`/blogs/${id}`);
   };
 
   return (

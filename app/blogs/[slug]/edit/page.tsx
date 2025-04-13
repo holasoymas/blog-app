@@ -5,7 +5,7 @@ import Image from "next/image";
 import { LoginBtn } from "@/components/Button";
 import { Blog } from "@/types";
 import { getItem, setItem } from "@/app/utils/storage";
-import { notFound, useRouter } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { validateBlog } from "@/app/utils/validations";
 
 const imageOptions = [
@@ -28,8 +28,6 @@ export default function EditBlog({ params }: { params: Promise<{ slug: string }>
   // console.log(slug, blog);
 
   if (!blog) return notFound();
-
-  const router = useRouter();
 
   const [title, setTitle] = useState(blog.title);
   const [description, setDescription] = useState(blog.description);
@@ -66,7 +64,7 @@ export default function EditBlog({ params }: { params: Promise<{ slug: string }>
     setItem<Blog[]>("blogs", updatedBlogs);
 
     // go to the currently created blog 
-    router.push(`/blogs/${blog.id}`);
+    redirect(`/blogs/${blog.id}`);
   };
 
   return (
