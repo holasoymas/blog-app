@@ -1,4 +1,8 @@
-Blog App with Signup, Login, and Blog Management in **Next.js**
+# Blog App with Signup, Login, and Blog Management in **Next.js**
+
+🔗 Live Demo: [https://blog-app-one-hazel.vercel.app/](https://blog-app-one-hazel.vercel.app/)  
+💻 GitHub Repo: [https://github.com/holasoymas/blog-app](https://github.com/holasoymas/blog-app)  
+💻 GitLab Repo: [https://gitlab.com/mahesh2855115/blog-app](https://gitlab.com/mahesh2855115/blog-app)  
 
 ## Install Dependencies 
 Run on the base folder of your app, where `package.json` is included
@@ -43,6 +47,7 @@ You can start editing the project.
 │   └── utils         // utilities functions(dateFormatter, validations funs, wrapper for localstorage) etc...
 ├── components        // components route 
 ├── data              // dummy 5 INITIALIZED blogs  
+├── hooks             // custom hook for getting localstorage, AuthGuard wrapper
 ├── public     
 │   └── images        // images for blogs 
 └── types             // types (Blog, User) etc
