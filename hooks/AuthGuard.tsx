@@ -4,12 +4,7 @@ import { useEffect } from "react";
 import { redirect } from "next/navigation";
 import { useUserAuth } from "@/hooks/userAuth";
 import LoadingComponent from "@/components/LoadingComponent";
-
-interface AuthGuardProps {
-  children: React.ReactNode;
-  redirectIfAuthenticated?: boolean; // true = used in /login or /signup
-  redirectTo?: string; // where to go if redirect is triggered
-}
+import { AuthGuardProps } from "@/types";
 
 export default function AuthGuard({
   children,

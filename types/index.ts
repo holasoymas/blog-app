@@ -22,3 +22,9 @@ export interface Blog {
   image: string,
   createdAt: Date,
 }
+
+export interface AuthGuardProps {
+  children: React.ReactNode;
+  redirectIfAuthenticated?: boolean;
+  redirectTo?: string;
+}
