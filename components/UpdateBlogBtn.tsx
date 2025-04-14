@@ -1,15 +1,15 @@
 'use client';
 
 import { Blog } from "@/types";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
+import React from "react";
 
 export default function UpdateBlogBtn({ blog }: { blog: Blog }) {
 
-  const router = useRouter();
-
-  const handleUpdate = () => {
-    console.log("Update blog:", blog);
-    router.push(`/blogs/${blog.id}/edit`);
+  const handleUpdate = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
+    // console.log("Update blog:", blog);
+    redirect(`/blogs/${blog.id}/edit`);
   };
 
   return (

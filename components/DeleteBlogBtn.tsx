@@ -1,13 +1,13 @@
-
 'use client';
 
 import { getItem, setItem } from "@/app/utils/storage";
 import { Blog } from "@/types";
-import { redirect } from "next/navigation";
+import React from "react";
 
 export default function DeleteBlogBtn({ blog }: { blog: Blog }) {
-  const handleDelete = () => {
 
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
+    e.preventDefault();
     const con = window.confirm("Are you sure you want to delete the blog ?");
     if (!con) return;
 
@@ -21,7 +21,7 @@ export default function DeleteBlogBtn({ blog }: { blog: Blog }) {
     // store to localstorage 
     setItem<Blog[]>("blogs", newBlogs);
 
-    redirect("/blogs")
+    window.location.href = "/blogs";
 
   };
 
