@@ -7,12 +7,9 @@ import { LoginBtn } from "@/components/Button";
 import Link from "next/link";
 import { SignUpData } from "@/types";
 import { validateUserData } from "../utils/validations";
+import AuthGuard from "@/hooks/AuthGuard";
 
 export default function Signup() {
-
-  // if the user is already logged in redirect to /blogs page
-  const isLoggedIn = Storage.getItem<boolean>("isLoggedIn");
-  if (isLoggedIn) redirect("/blogs");
 
   // for collecting user input data 
   const [formData, setFormData] = useState<SignUpData>({
@@ -56,66 +53,68 @@ export default function Signup() {
 
   return (
     <>
-      <form className="forms" onSubmit={handleSubmit}>
-        <h1 className="form-title">Sign Up</h1>
+      <AuthGuard redirectIfAuthenticated={true}>
+        <form className="forms" onSubmit={handleSubmit}>
+          <h1 className="form-title">Sign Up</h1>
 
-        <div className="field-container">
-          <div>
-            <label htmlFor="name" className="label-name">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="input-field"
-              placeholder="Enter your name"
-              required
-            />
-            {formErrors.name && <p className="field-error">{formErrors.name}</p>}
+          <div className="field-container">
+            <div>
+              <label htmlFor="name" className="label-name">
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="input-field"
+                placeholder="Enter your name"
+                required
+              />
+              {formErrors.name && <p className="field-error">{formErrors.name}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="email" className="label-name">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input-field"
+                placeholder="Enter your email"
+                required
+              />
+              {formErrors.email && <p className="field-error">{formErrors.email}</p>}
+            </div>
+
+            <div>
+              <label htmlFor="password" className="label-name">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input-field"
+                placeholder="Enter your password"
+                required
+              />
+              {formErrors.password && <p className="field-error">{formErrors.password}</p>}
+            </div>
+
+            <h3 className="text-center"> Already have an account ? <Link className="text-blue-400 underline" href="/login">Login</Link></h3>
+
+            <LoginBtn text="Sign Up" />
           </div>
-
-          <div>
-            <label htmlFor="email" className="label-name">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="input-field"
-              placeholder="Enter your email"
-              required
-            />
-            {formErrors.email && <p className="field-error">{formErrors.email}</p>}
-          </div>
-
-          <div>
-            <label htmlFor="password" className="label-name">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="input-field"
-              placeholder="Enter your password"
-              required
-            />
-            {formErrors.password && <p className="field-error">{formErrors.password}</p>}
-          </div>
-
-          <h3 className="text-center"> Already have an account ? <Link className="text-blue-400 underline" href="/login">Login</Link></h3>
-
-          <LoginBtn text="Sign Up" />
-        </div>
-      </form>
+        </form>
+      </AuthGuard>
     </>
   );
 }

@@ -1,16 +1,15 @@
 "use client";
 
 import { BaseButton } from "@/components/Button";
-import { getItem } from "./utils/storage";
-import { SignUpData } from "@/types";
+import LoadingComponent from "@/components/LoadingComponent";
+import { useUserAuth } from "@/hooks/userAuth";
 
 export default function Home() {
 
-  // check if the user is authenticated of not 
-  const isLoggedIn = getItem<boolean>("isLoggedIn");
+  // using custom hook to fetch user auth data 
+  const { isLoading, isLoggedIn, user } = useUserAuth();
 
-  // if yes fetch the data 
-  const user = isLoggedIn ? getItem<SignUpData>("authUser") : null;
+  if (isLoading) return <LoadingComponent />;
 
   return (
     <div className="flex flex-col justify-center items-center h-screen text-center">

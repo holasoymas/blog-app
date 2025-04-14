@@ -7,11 +7,16 @@ import { LoginBtn } from "@/components/Button";
 import Link from "next/link";
 import { LoginData, SignUpData } from "@/types";
 import { dummyBlogs } from "@/data/dummyBlogs";
+import { useUserAuth } from "@/hooks/userAuth";
+import AuthGuard from "@/hooks/AuthGuard";
 
 const LogIn = () => {
 
   // if the user is already logged in redirect to /blogs page
-  const isLoggedIn = Storage.getItem<boolean>("isLoggedIn");
+  // const isLoggedIn = Storage.getItem<boolean>("isLoggedIn");
+  // if (isLoggedIn) redirect("/blogs");
+  const { isLoggedIn } = useUserAuth();
+
   if (isLoggedIn) redirect("/blogs");
 
   const [formData, setFormData] = useState<LoginData>({
@@ -60,49 +65,50 @@ const LogIn = () => {
   }
 
   return (
-    <>
-      <form className="forms" onSubmit={handleSubmit}>
-        <h1 className="form-title">Log In</h1>
+    // wrap it with auth guard as when authenticated user visit login page redirect to blogs page 
+    <AuthGuard redirectIfAuthenticated={true}>
+      <>
+        <form className="forms" onSubmit={handleSubmit}>
+          <h1 className="form-title">Log In</h1>
 
-        <div className="field-container">
-          {error && <p className="text-red-500">{error}</p>}
-          <div>
-            <label htmlFor="email" className="label-name">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="input-field"
-              placeholder="Enter your email"
-              required
-            />
+          <div className="field-container">
+            {error && <p className="text-red-500">{error}</p>}
+            <div>
+              <label htmlFor="email" className="label-name">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                className="input-field"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="password" className="label-name">
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input-field"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
+            <h3 className="text-center"> Don't have an account ? <Link className="text-blue-400 underline" href="/signup">Sign up</Link></h3>
+            <LoginBtn text="Log In" />
           </div>
-
-          <div>
-            <label htmlFor="password" className="label-name">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="input-field"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-          <h3 className="text-center"> Don't have an account ? <Link className="text-blue-400 underline" href="/signup">Sign up</Link></h3>
-          <LoginBtn text="Log In" />
-        </div>
-      </form>
-
-    </>
+        </form>
+      </></AuthGuard>
   )
 };
 
